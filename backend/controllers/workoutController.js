@@ -11,7 +11,7 @@ export const getWorkouts = async (req, res) => {
             });
             res.status(200).json(workouts)
         })
-        .catch(function (error) {
+        .catch(error => {
             res.status(400).json({error: error.message})
         })
 
@@ -25,13 +25,29 @@ export const getWorkout = async (req, res) => {
         .then(workout => {
             res.status(200).json(workout)
         })
-        .catch(function (error) {
+        .catch(error => {
             return res.status(404).json({error: 'No such workout'})
         })
     }
 
 export const createWorkout = async  (req, res) => {
     const {title, load, reps} = req.body
+
+    let emptyFields = []
+
+    if (!title) {
+        emptyFields.push('title')
+    }
+    if (!load) {
+        emptyFields.push('load')
+    }
+    if (!reps) {
+        emptyFields.push('reps')
+    }
+    if (emptyFields.length > 0) {
+        res.status(400).json({error: 'Please fill all the fields'})
+    }
+
     await Workout.create({
         title,
         load,
@@ -41,7 +57,7 @@ export const createWorkout = async  (req, res) => {
             workout = JSON.parse(JSON.stringify(workout));
             workout.key = workout._id
             res.status(201).json(workout)
-        }).catch(function (error) {
+        }).catch(error => {
             res.status(400).json({error: error.message})
         })
 }
@@ -52,7 +68,7 @@ export const deleteWorkout = async (req, res) => {
         .then(workout => {
             res.status(200).json(workout)
         })
-        .catch(function (error) {
+        .catch(error => {
             res.status(400).json({error: error.message})
         })
 }
@@ -74,7 +90,7 @@ export const updateWorkout = async (req, res) => {
                 })
 
         })
-        .catch(function (error) {
+        .catch(error => {
             return res.status(404).json({error: 'No such workout'})
         })
 }
