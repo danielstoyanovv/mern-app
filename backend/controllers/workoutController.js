@@ -85,7 +85,7 @@ export const updateWorkout = async (req, res) => {
                 .then(workout => {
                     res.status(200).json(workout)
                 })
-                .catch(function (error) {
+                .catch(error => {
                     res.status(400).json({error: error.message})
                 })
 
