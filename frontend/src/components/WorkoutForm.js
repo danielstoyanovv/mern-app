@@ -7,6 +7,7 @@ const WorkoutForm = () => {
     const [reps, setReps] = useState('')
     const [error, setError] = useState(null)
     const {dispatch} = useWorkoutsContext()
+    const [emptyFields, setEmptyFields] = useState([])
 
 
     const handleSubmit = async (e) => {
@@ -22,12 +23,14 @@ const WorkoutForm = () => {
         const json = response.json()
 
         if (!response.ok) {
-            json.then(function (result) {
+            json.then(result => {
                 setError(result.error)
+                setEmptyFields(result.emptyFields)
             })
         }
 
         if (response.ok) {
+            setEmptyFields([])
             setError(null)
             setTitle('')
             setLoad('')
@@ -44,6 +47,7 @@ const WorkoutForm = () => {
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
+                className={emptyFields.includes('title') ? 'error' : ''}
             >
             </input>
 
@@ -52,6 +56,7 @@ const WorkoutForm = () => {
                 type="number"
                 onChange={(e) => setLoad(e.target.value)}
                 value={load}
+                className={emptyFields.includes('load') ? 'error' : ''}
             >
             </input>
 
@@ -60,9 +65,9 @@ const WorkoutForm = () => {
                 type="number"
                 onChange={(e) => setReps(e.target.value)}
                 value={reps}
+                className={emptyFields.includes('reps') ? 'error' : ''}
             >
             </input>
-
             <button>Save</button>
             {error && <div className="error">{error}</div> }
         </form>
