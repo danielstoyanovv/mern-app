@@ -3,7 +3,7 @@
 import Workout from '../models/workoutModel.js'
 
 export const getWorkouts = async (req, res) => {
-    Workout
+    await Workout
         .find()
         .sort({ createdAt: -1 })
         .then(workouts => {
