@@ -1,3 +1,5 @@
+"use strict";
+
 import express from "express";
 import {createWorkout, getWorkouts, getWorkout, updateWorkout, deleteWorkout} from "../controllers/workoutController.js";
 const router = express.Router()

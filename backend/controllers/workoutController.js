@@ -1,3 +1,5 @@
+"use strict";
+
 import Workout from '../models/workoutModel.js'
 
 export const getWorkouts = async (req, res) => {
@@ -8,7 +10,9 @@ export const getWorkouts = async (req, res) => {
             workouts = JSON.parse(JSON.stringify(workouts));
             workouts.forEach((workout) => {
                 workout.key = workout._id
+                // console.log(`title ${workout.title}`)
             });
+            // console.log(`count all workouts ${workouts.length}`)
             res.status(200).json(workouts)
         })
         .catch(error => {
@@ -78,7 +82,7 @@ export const updateWorkout = async (req, res) => {
     await Workout.findOneAndUpdate({_id: id}, {
         ...req.body
     })
-        .then(async function (result) {
+        .then(async result => {
             await Workout
                 .findById(id)
                 .exec()
