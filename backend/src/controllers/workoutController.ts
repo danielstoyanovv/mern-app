@@ -1,15 +1,16 @@
 "use strict";
 
-import Workout from '../models/workoutModel.js'
+import Workout from '../models/workoutModel'
+import { Request, Response } from "express"
 
-export const getWorkouts = async (req, res) => {
+export const getWorkouts = async ( req: Request,  res: Response) => {
     await Workout
         .find()
         .sort({ createdAt: -1 })
         .then(workouts => {
             workouts = JSON.parse(JSON.stringify(workouts));
             workouts.forEach((workout) => {
-                workout.key = workout._id
+                // workout.key = workout._id
                 // console.log(`title ${workout.title}`)
             });
             // console.log(`count all workouts ${workouts.length}`)
@@ -21,7 +22,7 @@ export const getWorkouts = async (req, res) => {
 
 }
 
-export const getWorkout = async (req, res) => {
+export const getWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
     await Workout
         .findById(id)
@@ -34,7 +35,7 @@ export const getWorkout = async (req, res) => {
         })
     }
 
-export const createWorkout = async  (req, res) => {
+export const createWorkout = async  (req: Request, res: Response) => {
     const {title, load, reps} = req.body
 
     let emptyFields = []
@@ -59,14 +60,14 @@ export const createWorkout = async  (req, res) => {
     })
         .then(workout => {
             workout = JSON.parse(JSON.stringify(workout));
-            workout.key = workout._id
+            // workout.key = workout._id
             res.status(201).json(workout)
         }).catch(error => {
             res.status(400).json({error: error.message})
         })
 }
 
-export const deleteWorkout = async (req, res) => {
+export const deleteWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
     await Workout.findOneAndDelete({_id: id})
         .then(workout => {
@@ -77,7 +78,7 @@ export const deleteWorkout = async (req, res) => {
         })
 }
 
-export const updateWorkout = async (req, res) => {
+export const updateWorkout = async (req: Request, res: Response) => {
     const { id } = req.params
     await Workout.findOneAndUpdate({_id: id}, {
         ...req.body

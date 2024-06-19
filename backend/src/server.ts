@@ -4,9 +4,11 @@ import express from "express"
 import {config} from "dotenv"
 config()
 import workoutRoutes from './routes/workouts.js'
-import mongoose from 'mongoose'
+import {DbConnect} from "./config/DbConnect";
 
 const app = express()
+
+const port = 4000
 
 app.use(express.json())
 
@@ -21,12 +23,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/workouts', workoutRoutes)
 
-mongoose.connect(process.env.MONGO_URL + '/workouts')
-    .then(() => {
-        app.listen(process.env.BACKED_PORT, () => {
-            console.log('listening on port', process.env.BACKED_PORT)
-        })
-    })
-    .catch((error) => {
-        console.log(error)
-    })
+app.listen(port, () => {
+    console.log('listening on port', port)
+})
+
+const connection = new DbConnect()

@@ -1,7 +1,7 @@
 "use strict";
 
 import express from "express";
-import {createWorkout, getWorkouts, getWorkout, updateWorkout, deleteWorkout} from "../controllers/workoutController.js";
+import {createWorkout, getWorkouts, getWorkout, updateWorkout, deleteWorkout} from "../controllers/workoutController";
 const router = express.Router()
 
 router.get('/', getWorkouts)
