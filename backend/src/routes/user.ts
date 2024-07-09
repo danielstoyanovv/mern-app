@@ -1,17 +1,13 @@
 "use strict";
 
 import express from "express";
-import {createUser} from "../controllers/userController";
+import {getUsers, getUser, deleteUser} from "../controllers/userController";
 const router = express.Router()
 
-// router.get('/', getWorkouts)
+router.get('/', getUsers)
 
-// router.get('/:id', getWorkout)
+router.get('/:id', getUser)
 
-router.post('/', createUser)
-
-// router.delete('/:id', deleteWorkout)
-
-// router.patch('/:id', updateWorkout)
+router.delete('/:id', deleteUser)
 
 export default router;

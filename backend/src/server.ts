@@ -9,6 +9,8 @@ import authRoutes from "./routes/auth";
 import {DbConnect} from "./config/DbConnect";
 import {verifyAdmin} from './middleware/verifyAdmin'
 import { Request, Response } from "express"
+import {validateUserRequest} from "./middleware/validateUserRequest";
+import {createUser, updateUser} from "./controllers/userController";
 
 const app = express()
 
@@ -39,6 +41,10 @@ app.post("/admin", verifyAdmin, (req: Request, res: Response) => {
     const { username } = req.body;
     res.send(`This is an Admin Route. Welcome ${username}`);
 });
+
+app.post("/api/users", validateUserRequest, verifyAdmin, createUser);
+
+app.patch('/api/users/:id', validateUserRequest, updateUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)
