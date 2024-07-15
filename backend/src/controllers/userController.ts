@@ -2,6 +2,7 @@
 
 import User from '../models/userModel'
 import { Request, Response } from "express"
+const bcrypt = require("bcrypt")
 
 export const getUsers = async ( req: Request,  res: Response) => {
     try {
@@ -16,7 +17,8 @@ export const getUsers = async ( req: Request,  res: Response) => {
 
 export const createUser = async ( req: Request,  res: Response) => {
     try {
-        const { username, password, role } = req.body;
+        const { username, role } = req.body;
+        const password = await bcrypt.hash(req.body.password, 10);
         await User.create({username, password, role})
         res.status(201).json({ message: "New user registered successfully" });
     } catch (error) {
@@ -52,8 +54,10 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
+        const password = await bcrypt.hash(req.body.password, 10);
+        const { username, role } = req.body;
         await User.findOneAndUpdate({_id: id}, {
-            ...req.body
+            username, role, password
         })
         const user = await User
             .findById(id)

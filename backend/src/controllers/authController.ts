@@ -14,7 +14,9 @@ export const loginUser = async ( req: Request,  res: Response) => {
         if (!user) {
             return res.status(401).json({ message: "Invalid username or password" });
         }
-        if (user.password !== password) {
+        const bcrypt = require("bcrypt")
+        const result = await bcrypt.compare(password, user.password);
+        if (!result) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
         if (user.role !== role) {

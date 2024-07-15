@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/workouts', workoutRoutes)
-app.use('/api/users', VerifyToken, verifyAdmin, userRoutes)
+app.use('/api/users', userRoutes)
 app.use('/api/login', authRoutes)
 
 app.post("/admin", verifyAdmin, (req: Request, res: Response) => {
@@ -43,9 +43,9 @@ app.post("/admin", verifyAdmin, (req: Request, res: Response) => {
     res.send(`This is an Admin Route. Welcome ${username}`);
 });
 
-app.post("/api/users", validateUserRequest, verifyAdmin, createUser);
+app.post("/api/users", validateUserRequest, createUser);
 
-app.patch('/api/users/:id', validateUserRequest, updateUser)
+app.patch('/api/users/:id', validateUserRequest, verifyAdmin, VerifyToken, updateUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)
