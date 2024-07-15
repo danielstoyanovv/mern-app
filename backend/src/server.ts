@@ -11,6 +11,7 @@ import {verifyAdmin} from './middleware/verifyAdmin'
 import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
 import {createUser, updateUser} from "./controllers/userController";
+import {VerifyToken} from "./middleware/verifyToken";
 
 const app = express()
 
@@ -34,7 +35,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/workouts', workoutRoutes)
-app.use('/api/users', userRoutes)
+app.use('/api/users', VerifyToken, verifyAdmin, userRoutes)
 app.use('/api/login', authRoutes)
 
 app.post("/admin", verifyAdmin, (req: Request, res: Response) => {

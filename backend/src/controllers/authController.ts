@@ -25,10 +25,11 @@ export const loginUser = async ( req: Request,  res: Response) => {
             username: user.username,
             role: user.role
         }, process.env.JWT_SECRET!, {
-            expiresIn: process.env.JWT_EXPIRES_IN,
+            expiresIn: 180
         });
         res.json({ token });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Internal server error" });
     }
 }
