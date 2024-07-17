@@ -17,12 +17,6 @@ const app = express()
 
 const port = 4000
 
-declare module 'express-serve-static-core' {
-    export interface Request {
-        user: any
-    }
-}
-
 app.use(express.json())
 
 app.use((req, res, next) => {
