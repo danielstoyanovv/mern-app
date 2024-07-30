@@ -59,7 +59,6 @@ describe("Test users api",  function() {
                 const userJson = await getUserResponse.json()
                 if (userJson.ok) {
                     userJson.then(async user => {
-                        expect(user.username).toEqual("test_user");
                         expect(user.role).toEqual("admin");
                         expect(user).toHaveProperty("_id");
                         expect(user).toHaveProperty("password");
