@@ -10,7 +10,7 @@ import {DbConnect} from "./config/DbConnect";
 import {verifyAdmin} from './middleware/verifyAdmin'
 import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
-import {createUser, updateUser} from "./controllers/userController";
+import {createUser, updateUser, deleteUser} from "./controllers/userController";
 import {VerifyToken} from "./middleware/verifyToken";
 
 const app = express()
@@ -35,6 +35,8 @@ app.post("/admin", verifyAdmin, (req: Request, res: Response) => {
 app.post("/api/users", validateUserRequest, createUser);
 
 app.patch('/api/users/:id', validateUserRequest, verifyAdmin, VerifyToken, updateUser)
+
+app.delete('/api/users/:id', verifyAdmin, VerifyToken, deleteUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)

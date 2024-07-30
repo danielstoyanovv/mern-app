@@ -6,16 +6,8 @@ config()
 
 export class DbConnect {
     constructor() {
-        if (process.env.NODE_ENV === 'test') {
-            return mongoose.connect(process.env.MONGO_URL + '/application-test')
-                .then(() => {
-                    console.log('mongodb connected')
-                })
-                .catch((error: object) => {
-                    console.log(error)
-                })
-        }
-        mongoose.connect(process.env.MONGO_URL + '/application')
+        const DB_NAME = process.env.NODE_ENV === 'test' ? "application-test" : "application"
+        mongoose.connect(process.env.MONGO_URL + '/' + DB_NAME)
             .then(() => {
                 console.log('mongodb connected')
             })

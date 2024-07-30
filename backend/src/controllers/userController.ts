@@ -5,10 +5,12 @@ import { Request, Response } from "express"
 const bcrypt = require("bcrypt")
 
 export const getUsers = async ( req: Request,  res: Response) => {
-    try {
+    try { 
+        const limit = req.query.limit ?? null
         const users = await User
             .find()
             .sort({ createdAt: -1 })
+            .limit(limit)
         res.status(200).json(users)
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
