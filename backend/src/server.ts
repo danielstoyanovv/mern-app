@@ -12,10 +12,15 @@ import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
 import {createUser, updateUser, deleteUser} from "./controllers/userController";
 import {VerifyToken} from "./middleware/verifyToken";
+import cors from "cors";
+import { existsUser } from "./middleware/existsUser.js";
+import { verifyEmail } from "./middleware/verifyEmail.js";
 
 const app = express()
 
 const port = 4000
+
+app.use(cors())
 
 app.use(express.json())
 
@@ -32,9 +37,9 @@ app.post("/admin", verifyAdmin, (req: Request, res: Response) => {
     res.send(`This is an Admin Route. Welcome ${username}`);
 });
 
-app.post("/api/users", validateUserRequest, createUser);
+app.post("/api/users", validateUserRequest, existsUser, createUser);
 
-app.patch('/api/users/:id', validateUserRequest, verifyAdmin, VerifyToken, updateUser)
+app.patch('/api/users/:id', validateUserRequest, verifyAdmin, verifyEmail, VerifyToken, updateUser)
 
 app.delete('/api/users/:id', verifyAdmin, VerifyToken, deleteUser)
 

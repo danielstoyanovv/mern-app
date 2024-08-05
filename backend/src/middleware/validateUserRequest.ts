@@ -1,11 +1,12 @@
 import {Request, Response, NextFunction } from "express";
+import emailValidator from "email-validator";
 
-export const validateUserRequest = (req: Request, res: Response, next: NextFunction) => {
+export const validateUserRequest = async (req: Request, res: Response, next: NextFunction) => {
     const ROLES = ['admin', 'user']
-    const { username, password, role } = req.body;
+    const { email, password, role } = req.body;
     const validationErrors = [];
-    if (!username || username.length > 20 || username.length < 6) {
-        validationErrors.push('username is not valid')
+    if (!emailValidator.validate(email)) {
+        validationErrors.push('email is not valid')
     }
     if (!password || password.length > 20 || password.length < 6) {
         validationErrors.push("password is not valid");

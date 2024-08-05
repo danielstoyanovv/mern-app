@@ -19,9 +19,9 @@ export const getUsers = async ( req: Request,  res: Response) => {
 
 export const createUser = async ( req: Request,  res: Response) => {
     try {
-        const { username, role } = req.body;
+        const { email, role } = req.body;
         const password = await bcrypt.hash(req.body.password, 10);
-        const user = await User.create({username, password, role})
+        const user = await User.create({email, password, role})
         res.status(201).json({ message: "New user registered successfully", data: user });
     } catch (error) {
         console.log(error)
@@ -57,15 +57,15 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const password = await bcrypt.hash(req.body.password, 10);
-        const { username, role } = req.body;
+        const { email, role } = req.body;
         await User.findOneAndUpdate({_id: id}, {
-            username, role, password
+            email, role, password
         })
         const user = await User
             .findById(id)
             .exec()
         res.status(200).json(user)
     } catch (error) {
-        res.status(404).json({error: 'No such workout'})
+        res.status(404).json({error: 'No such user'})
     }
 }
