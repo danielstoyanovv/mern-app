@@ -3,9 +3,9 @@ describe("Test users api",  function() {
     const API_LOGIN = "http://localhost:4000/api/login";
     test("Create user", async function() {
         const notValidUser = {
-            username: "2",
+            email: "2",
             password: "1",
-            role: "test"
+            role: "7"
         }
         const notValidResponse = await fetch(API_URL, {
             method: "POST",
@@ -16,7 +16,7 @@ describe("Test users api",  function() {
         })
         expect(notValidResponse.status).toBe(400);
         const user = {
-            username: Math.random().toString(16).substr(2, 8),
+            email: "test_create_" + Math.random().toString(16).substr(2, 8) + "@abv.bg",
             password: "123456",
             role: "admin"
         }
@@ -38,7 +38,7 @@ describe("Test users api",  function() {
     });
     test("Get user", async function() {
         const userData = {
-            username: Math.random().toString(16).substr(2, 8),
+            email: "test_user_" + Math.random().toString(16).substr(2, 8) + "@abv.bg",
             password: "123456",
             role: "admin"
         }
@@ -62,7 +62,7 @@ describe("Test users api",  function() {
                         expect(user.role).toEqual("admin");
                         expect(user).toHaveProperty("_id");
                         expect(user).toHaveProperty("password");
-                        expect(user).toHaveProperty("username");    
+                        expect(user).toHaveProperty("email");    
                     })
                 }    
             })
@@ -73,11 +73,14 @@ describe("Test users api",  function() {
         const json = response.json()
         if (response.ok) {
             expect(response.status).toBe(200);
+            json.then(async users => {
+                expect(users.data.total).not.toBe(0);
+            })
         }
     });
     test("Update user", async function() {
         const userWithoutAdminRole = {
-            username: Math.random().toString(16).substr(2, 8),
+            email: "update_not_admin_" + Math.random().toString(16).substr(2, 8) + "@abv.bg",
             password: "123456",
             role: "user"
         }
@@ -104,13 +107,13 @@ describe("Test users api",  function() {
                 const jsonLogin = responseLogin.json()
                 expect(responseLogin.status).toBe(200);
                 jsonLogin.then(async login => {
-                    expect(login.token).not.toBeNull();
+                    expect(login.data.token).not.toBeNull();
                     const responseUpdate = await fetch(API_URL + '/' + result.data._id, {
                         method: 'PATCH',
                         body: JSON.stringify(userWithoutAdminRole),
                         headers: {
                             "Content-Type": "application/json",
-                            "x-access-token": login.token
+                            "x-access-token": login.data.token
                         }
 
                     })
@@ -120,7 +123,7 @@ describe("Test users api",  function() {
             
         }
         const userWithAdminRole = {
-            username: Math.random().toString(16).substr(2, 8),
+            email: "update_admin_" + Math.random().toString(16).substr(2, 8) + "@abv.bg",
             password: "123456",
             role: "admin"
         }
@@ -146,13 +149,13 @@ describe("Test users api",  function() {
             expect(responseLogin.status).toBe(200);
             const jsonLogin = responseLogin.json()
             jsonLogin.then(async login => {
-                expect(login.token).not.toBeNull();
+                expect(login.data.token).not.toBeNull();
                 const responseUpdate = await fetch(API_URL + '/' + result.data._id, {
                     method: 'PATCH',
                     body: JSON.stringify(userWithAdminRole),
                     headers: {
                         "Content-Type": "application/json",
-                        "x-access-token": login.token
+                        "x-access-token": login.data.token
                     }
 
                 })
@@ -162,7 +165,7 @@ describe("Test users api",  function() {
     });
     test("Delete user", async function() {
         const userWithAdminRole = {
-            username: Math.random().toString(16).substr(2, 8),
+            email: "test_delete_user@abv.bg",
             password: "123456",
             role: "admin"
         }
@@ -188,16 +191,16 @@ describe("Test users api",  function() {
             expect(responseLogin.status).toBe(200);
             const jsonLogin = responseLogin.json()
             jsonLogin.then(async login => {
-                expect(login.token).not.toBeNull();
-                const responseUpdate = await fetch(API_URL + '/' + result.data._id, {
+                expect(login.data.token).not.toBeNull();
+                const responseDelete = await fetch(API_URL + '/' + result.data._id, {
                     method: 'DELETE',
                     headers: {
                         "Content-Type": "application/json",
-                        "x-access-token": login.token
+                        "x-access-token": login.data.token
                     }
 
                 })
-                expect(responseUpdate.status).toBe(200);
+                expect(responseDelete.status).toBe(200);
             })
         });
     });
