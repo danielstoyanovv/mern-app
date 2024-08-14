@@ -7,7 +7,6 @@ import workoutRoutes from './routes/workouts.js'
 import userRoutes from "./routes/user";
 import authRoutes from "./routes/auth";
 import {DbConnect} from "./config/DbConnect";
-import {verifyAdmin} from './middleware/verifyAdmin'
 import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
 import {createUser, updateUser, deleteUser} from "./controllers/userController";
@@ -32,16 +31,16 @@ app.use('/api/workouts', workoutRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/login', authRoutes)
 
-app.post("/admin", verifyAdmin, (req: Request, res: Response) => {
+app.post("/admin", (req: Request, res: Response) => {
     const { username } = req.body;
     res.send(`This is an Admin Route. Welcome ${username}`);
 });
 
 app.post("/api/users", validateUserRequest, existsUser, createUser);
 
-app.patch('/api/users/:id', validateUserRequest, verifyAdmin, verifyEmail, VerifyToken, updateUser)
+app.patch('/api/users/:id', validateUserRequest, verifyEmail, VerifyToken, updateUser)
 
-app.delete('/api/users/:id', verifyAdmin, VerifyToken, deleteUser)
+app.delete('/api/users/:id', VerifyToken, deleteUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)
