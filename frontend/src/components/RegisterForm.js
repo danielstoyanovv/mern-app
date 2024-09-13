@@ -3,11 +3,12 @@ import {useState} from "react";
 import { useForm } from "react-hook-form"
 
 const RegisterForm = () => {
+    const errorStatuses = [400, 401, 500]
     const [message, setMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+
     const { register, handleSubmit, formState: { errors } } = useForm();
-        const onSubmit = async (data) => {
-            console.log(data)
-           
+        const onSubmit = async (data) => {           
             const response = await fetch('/api/users', {
                 method: "POST",
                 body: JSON.stringify(data),
@@ -22,19 +23,29 @@ const RegisterForm = () => {
             if (response.ok) {
                 json.then(result => {
                     setMessage(result.message)
+                    setErrorMessage()
                 }).catch(errors => {
                     console.log(errors)
                 })
-            }   
+            } 
+            if (errorStatuses.includes(response.status)) {
+                json.then(result => {
+                    setMessage()
+                    setErrorMessage(result.message)
+                })
+            }
         }
     
     return (
         <form className="App" onSubmit={handleSubmit(onSubmit)}>
             <span className="alerts">
-                {message}
+                <b>{message}</b>
+            </span>
+            <span className="errors">
+                <i>{errorMessage}</i>
             </span>
             <div>
-                <input placeholder="Email" type="text" {...register("email", { required: true, minLength: 6,  maxLength: 20 })} />
+                <input placeholder="Email" type="text" {...register("email", { required: true, minLength: 6,  maxLength: 50 })} />
                 {errors.email && <span style={{ color: "red" }}>
                 *Email* is mandatory and not valid </span>}
             </div>
