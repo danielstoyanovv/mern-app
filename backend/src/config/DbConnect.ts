@@ -6,7 +6,7 @@ config()
 
 export class DbConnect {
     constructor() {
-        const DB_NAME = process.env.NODE_ENV === 'test' ? "application-test" : "application"
+        const DB_NAME = process.env.NODE_ENV === 'test' ? process.env.MONGO_DB_NAME +  "_test" : process.env.MONGO_DB_NAME
         mongoose.connect(process.env.MONGO_URL + '/' + DB_NAME)
             .then(() => {
                 console.log('mongodb connected')

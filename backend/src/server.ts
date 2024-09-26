@@ -16,7 +16,7 @@ import { verifyEmail } from "./middleware/verifyEmail.js";
 
 const app = express()
 
-const port = 4000
+const port = process.env.SERVER_PORT || 4000
 
 app.use(express.json())
 
