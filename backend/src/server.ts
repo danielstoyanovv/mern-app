@@ -5,7 +5,6 @@ import {config} from "dotenv"
 config()
 import workoutRoutes from './routes/workouts.js'
 import userRoutes from "./routes/user";
-import authRoutes from "./routes/auth";
 import {DbConnect} from "./config/DbConnect";
 import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
@@ -13,6 +12,7 @@ import {createUser, updateUser, deleteUser} from "./controllers/userController";
 import {VerifyToken} from "./middleware/verifyToken";
 import { existsUser } from "./middleware/existsUser.js";
 import { verifyEmail } from "./middleware/verifyEmail.js";
+import {loginUser} from "./controllers/authController";
 
 const app = express()
 
@@ -26,7 +26,6 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/workouts', workoutRoutes)
 app.use('/api/users', userRoutes)
-app.use('/api/login', authRoutes)
 
 app.post("/admin", (req: Request, res: Response) => {
     const { username } = req.body;
@@ -38,6 +37,8 @@ app.post("/api/users", validateUserRequest, existsUser, createUser);
 app.patch('/api/users/:id', validateUserRequest, verifyEmail, VerifyToken, updateUser)
 
 app.delete('/api/users/:id', VerifyToken, deleteUser)
+
+app.post('/api/login', validateUserRequest, loginUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)
