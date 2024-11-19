@@ -2,9 +2,9 @@
 
 import User from '../models/userModel'
 import { Request, Response } from "express"
-import jwt from 'jsonwebtoken'
 import {config} from "dotenv"
 import { STATUS_SUCCESS, STATUS_ERROR, INTERNAL_SERVER_ERROR } from "../config/data"
+import { TokenService } from "../config/TokenService";
 config()
 export const loginUser = async ( req: Request,  res: Response) => {
     const { email, password, role } = req.body;
@@ -34,13 +34,11 @@ export const loginUser = async ( req: Request,  res: Response) => {
                 message: "Invalid role" 
             });
         }
-        const token = jwt.sign({
-            id: user._id,
-            email: email,
-            role: role
-        }, process.env.JWT_SECRET!, {
-            expiresIn: 180
-        });
+        const token = new TokenService()
+            .setUserId(user._id)
+            .setUserEmail(email)
+            .setUserRole(role)
+            .getToken
         const data = {
             token: token
         }
