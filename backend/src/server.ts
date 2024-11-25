@@ -5,7 +5,7 @@ import {config} from "dotenv"
 config()
 import workoutRoutes from './routes/workouts.js'
 import userRoutes from "./routes/user";
-import {DbConnect} from "./config/DbConnect";
+import {ConnectToDatabase} from "./config/ConnectToDatabase";
 import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
 import {createUser, updateUser, deleteUser} from "./controllers/userController";
@@ -44,4 +44,4 @@ app.listen(port, () => {
     console.log('listening on port', port)
 })
 
-const connection = new DbConnect()
+const connection = new ConnectToDatabase()
