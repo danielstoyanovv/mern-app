@@ -3,7 +3,7 @@
 import User from '../models/userModel'
 import { Request, Response } from "express"
 const bcrypt = require("bcrypt")
-import { STATUS_SUCCESS, STATUS_ERROR, INTERNAL_SERVER_ERROR } from "../config/data"
+import { STATUS_SUCCESS, STATUS_ERROR, INTERNAL_SERVER_ERROR } from "../constants/data"
 
 export const getUsers = async ( req: Request,  res: Response) => {
     try { 

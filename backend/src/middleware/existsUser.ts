@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
-import { STATUS_ERROR } from "../config/data"
+import { STATUS_ERROR } from "../constants/data"
 
 
 export async function existsUser(req: Request, res: Response, next: NextFunction) {

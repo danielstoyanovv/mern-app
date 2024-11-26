@@ -3,8 +3,8 @@
 import User from '../models/userModel'
 import { Request, Response } from "express"
 import {config} from "dotenv"
-import { STATUS_SUCCESS, STATUS_ERROR, INTERNAL_SERVER_ERROR } from "../config/data"
-import { TokenService } from "../config/TokenService";
+import { STATUS_SUCCESS, STATUS_ERROR, INTERNAL_SERVER_ERROR } from "../constants/data"
+import { TokenService } from "../services/TokenService";
 config()
 export const loginUser = async ( req: Request,  res: Response) => {
     const { email, password, role } = req.body;
