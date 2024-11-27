@@ -3,15 +3,15 @@
 import express from "express"
 import {config} from "dotenv"
 config()
-import workoutRoutes from './routes/workouts.js'
+import workoutRoutes from './routes/workouts'
 import userRoutes from "./routes/user";
 import {ConnectToDatabase} from "./config/ConnectToDatabase";
 import { Request, Response } from "express"
 import {validateUserRequest} from "./middleware/validateUserRequest";
 import {createUser, updateUser, deleteUser} from "./controllers/userController";
 import {VerifyToken} from "./middleware/verifyToken";
-import { existsUser } from "./middleware/existsUser.js";
-import { verifyEmail } from "./middleware/verifyEmail.js";
+import { existsUser } from "./middleware/existsUser";
+import { verifyEmail } from "./middleware/verifyEmail";
 import {loginUser} from "./controllers/authController";
 
 const app = express()
