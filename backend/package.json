@@ -6,8 +6,8 @@
   "main": "./src/server.ts",
   "scripts": {
     "test": "jest",
-    "start": "node ./src/server.ts",
-    "dev": "nodemon ./src/server.ts"
+    "start": "node ./build/server.js",
+    "dev": "node ./build/server.js"
   },
   "keywords": [],
   "author": "",
