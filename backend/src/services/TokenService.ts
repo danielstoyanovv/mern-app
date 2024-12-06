@@ -7,6 +7,10 @@ export class TokenService {
     #userId: number
     #userEmail: string
     #userRole: string
+    /**
+     * Get token
+     * @return {string}
+     */
     get getToken() {
         return jwt.sign({
             id: this.getUserId,
@@ -16,27 +20,52 @@ export class TokenService {
             expiresIn: 180
         })
     }
+    /**
+     * Set user id
+     * @param {number} userId
+     * @return {this}
+     */
     setUserId(userId: number) {
         this.#userId = userId;
         return this
     }
+    /**
+     * get user id
+     * @return {number}
+     */
     getUserId() {
         return this.#userId
     }
-
+    /**
+     * Set user email
+     * @param {string} userEmail
+     * @return {this}
+     */
     setUserEmail(userEmail: string) {
         this.#userEmail = userEmail
         return this
     }
+    /**
+     * get user email
+     * @return {string}
+     */
     getUserEmail() {
         return this.#userEmail
     }
+    /**
+     * Set user role
+     * @param {string} userRole
+     * @return {this}
+     */
     setUserRole(userRole: string) {
         this.#userRole = userRole
         return this
     }
+    /**
+     * Get user role
+     * @return {string}
+     */
     getUserRole() {
         return this.#userRole
     }
-
 }
