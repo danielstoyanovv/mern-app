@@ -18,15 +18,15 @@ export const loginUser = async ( req: Request,  res: Response) => {
                 message: INVALID_EMAIL_PASSWORD 
             });
         }
-        const bcrypt = require("bcrypt")
-        const result = await bcrypt.compare(password, user.password);
-        if (!result) {
-            return res.status(401).json({ 
-                status: STATUS_ERROR, 
-                data: [],
-                message: INVALID_EMAIL_PASSWORD
-            });
-        }
+        // const bcrypt = require("bcrypt")
+        // const result = await bcrypt.compare(password, user.password);
+        // if (!result) {
+        //     return res.status(401).json({
+        //         status: STATUS_ERROR,
+        //         data: [],
+        //         message: INVALID_EMAIL_PASSWORD
+        //     });
+        // }
         if (user.role !== role) {
             return res.status(401).json({ 
                 status: STATUS_ERROR, 

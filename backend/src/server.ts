@@ -3,16 +3,15 @@
 import express from "express"
 import {config} from "dotenv"
 config()
-import workoutRoutes from './routes/workouts'
 import userRoutes from "./routes/user";
 import {ConnectToDatabase} from "./config/ConnectToDatabase";
 import { Request, Response } from "express"
-import {validateUserRequest} from "./middleware/validateUserRequest";
+import {validateUserRequestMiddleware} from "./middleware/validateUserRequestMiddleware";
 import {createUser, updateUser, deleteUser} from "./controllers/userController";
-import {VerifyToken} from "./middleware/verifyToken";
-import { existsUser } from "./middleware/existsUser";
-import { verifyEmail } from "./middleware/verifyEmail";
-import {loginUser} from "./controllers/authController";
+import {VerifyTokenMiddleware} from "./middleware/verifyTokenMiddleware";
+import { existsUserMiddleware } from "./middleware/existsUserMiddleware";
+import { verifyEmailMiddleware } from "./middleware/verifyEmailMiddleware";
+import {loginUser} from "./controllers/authenticationController";
 
 const app = express()
 
@@ -24,7 +23,6 @@ app.get('/', (req: Request, res: Response) => {
     res.json({mssg: 'Welcome to the app'})
 })
 
-app.use('/api/workouts', workoutRoutes)
 app.use('/api/users', userRoutes)
 
 app.post("/admin", (req: Request, res: Response) => {
@@ -32,13 +30,13 @@ app.post("/admin", (req: Request, res: Response) => {
     res.send(`This is an Admin Route. Welcome ${username}`);
 });
 
-app.post("/api/users", validateUserRequest, existsUser, createUser);
+app.post("/api/users", validateUserRequestMiddleware, existsUserMiddleware, createUser);
 
-app.patch('/api/users/:id', validateUserRequest, verifyEmail, VerifyToken, updateUser)
+app.patch('/api/users/:id', validateUserRequestMiddleware, verifyEmailMiddleware, VerifyTokenMiddleware, updateUser)
 
-app.delete('/api/users/:id', VerifyToken, deleteUser)
+app.delete('/api/users/:id', VerifyTokenMiddleware, deleteUser)
 
-app.post('/api/login', validateUserRequest, loginUser)
+app.post('/api/login', validateUserRequestMiddleware, loginUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)
