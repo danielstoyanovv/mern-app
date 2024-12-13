@@ -4,7 +4,7 @@ const UserDetails = ({ user }) => {
 
     return (
         <div id={user._id} className="workout-details">
-            <p>(Email): {user.email}</p>
+            <p><b>(Email): {user.email}</b></p>
             <p>(id): {user._id}</p>
             <p>(Role): {user.role}</p>
             <p>(Password) {user.password}</p>
