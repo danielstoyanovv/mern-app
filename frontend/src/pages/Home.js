@@ -1,35 +1,39 @@
-import {useEffect} from "react";
-import WorkoutDetails from "../components/WorkoutDetails";
-import WorkoutForm from "../components/WorkoutForm";
-import {useWorkoutsContext} from "../hooks/useWorkoutsContext";
+import {useEffect, useState} from "react";
+import UserDetails from "../components/UserDetails";
 
 const Home = () => {
-    const {workouts, dispatch} = useWorkoutsContext()
-
+    const [users, setUsers] = useState('')
+    const [usersCount, setUsersCount] = useState('')
     //fires when component is rendered
     useEffect(() => {
-        const fetchWorkouts = async () => {
-            const response = await fetch("/api/workouts")
+        async function usersPage() {
+            const response = await fetch('/api/users', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+
+                }
+            })
             const json = await response.json()
+            console.log(json.data.users)
             if (response.ok) {
-                dispatch({type: 'SET_WORKOUTS', payload: json})
+                setUsers(json.data.users)
+                setUsersCount(json.data.total)
             }
         }
-
-        fetchWorkouts()
-    }, [dispatch])
-
+        usersPage()
+    }, [])
     return (
         <div className="home">
-            <div className="workouts">
-                {workouts && workouts.map((workout) => (
-                    <WorkoutDetails key={workout._id} workout={workout}>
-                    </WorkoutDetails>
+            <div className="users">
+                All users: {usersCount}
+                {users && users.map((user) => (
+                    <UserDetails key={user._id} user={user}>
+                    </UserDetails>
                 ))}
-                <WorkoutForm />
             </div>
         </div>
     )
 }
-
 export default Home
