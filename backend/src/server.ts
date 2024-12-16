@@ -22,7 +22,7 @@ import {addUserToCacheMiddleware} from "./middleware/addUserToCacheMiddleware";
 
 const app = express()
 
-const port = process.env.SERVER_PORT || 4000
+const port = process.env.BACKED_PORT || 4000
 
 app.use(express.json())
 
