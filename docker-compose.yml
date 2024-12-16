@@ -9,6 +9,7 @@ services:
       - mongo_data:/data/db
     networks:
       - mern-app
+    restart: unless-stopped
   api:
     build:
       context: ./backend
@@ -38,6 +39,11 @@ services:
       - 3000:3000
     depends_on:
       - api
+  redis-server:
+    image: redis:alpine
+    restart: unless-stopped
+    networks:
+      - mern-app
 
 volumes:
   mongo_data:

@@ -3,15 +3,22 @@
 import express from "express"
 import {config} from "dotenv"
 config()
-import userRoutes from "./routes/user";
 import {ConnectToDatabase} from "./config/ConnectToDatabase";
 import { Request, Response } from "express"
 import {validateUserRequestMiddleware} from "./middleware/validateUserRequestMiddleware";
-import {createUser, updateUser, deleteUser} from "./controllers/userController";
+import {
+    createUser,
+    updateUser,
+    deleteUser,
+    getUsers,
+    getUser
+} from "./controllers/userController";
 import {VerifyTokenMiddleware} from "./middleware/verifyTokenMiddleware";
 import { existsUserMiddleware } from "./middleware/existsUserMiddleware";
 import { verifyEmailMiddleware } from "./middleware/verifyEmailMiddleware";
 import {loginUser} from "./controllers/authenticationController";
+import {addUsersToCacheMiddleware} from "./middleware/addUsersToCacheMiddleware";
+import {addUserToCacheMiddleware} from "./middleware/addUserToCacheMiddleware";
 
 const app = express()
 
@@ -22,8 +29,6 @@ app.use(express.json())
 app.get('/', (req: Request, res: Response) => {
     res.json({mssg: 'Welcome to the app'})
 })
-
-app.use('/api/users', userRoutes)
 
 app.post("/admin", (req: Request, res: Response) => {
     const { username } = req.body;
@@ -37,6 +42,10 @@ app.patch('/api/users/:id', validateUserRequestMiddleware, verifyEmailMiddleware
 app.delete('/api/users/:id', VerifyTokenMiddleware, deleteUser)
 
 app.post('/api/login', validateUserRequestMiddleware, loginUser)
+
+app.get("/api/users", addUsersToCacheMiddleware, getUsers);
+
+app.get('/api/users/:id', addUserToCacheMiddleware, getUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)

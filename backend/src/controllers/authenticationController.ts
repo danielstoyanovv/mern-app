@@ -3,7 +3,10 @@
 import User from '../models/userModel'
 import { Request, Response } from "express"
 import {config} from "dotenv"
-import { STATUS_SUCCESS, STATUS_ERROR, INTERNAL_SERVER_ERROR } from "../constants/data"
+import {
+    STATUS_SUCCESS,
+    STATUS_ERROR,
+    INTERNAL_SERVER_ERROR } from "../constants/data"
 import { TokenService } from "../services/TokenService";
 config()
 export const loginUser = async ( req: Request,  res: Response) => {
@@ -21,11 +24,11 @@ export const loginUser = async ( req: Request,  res: Response) => {
         const bcrypt = require("bcrypt")
         const result = await bcrypt.compare(password, user.password);
         if (!result) {
-             return res.status(401).json({
-                 status: STATUS_ERROR,
-                 data: [],
-                 message: INVALID_EMAIL_PASSWORD
-             });
+            return res.status(401).json({
+                status: STATUS_ERROR,
+                data: [],
+                message: INVALID_EMAIL_PASSWORD
+            });
         }
         if (user.role !== role) {
             return res.status(401).json({ 

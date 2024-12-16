@@ -1,6 +1,7 @@
+"use strict";
+
 import {Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
-
 export const verifyEmailMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { email } = req.body;
