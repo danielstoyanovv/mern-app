@@ -10,7 +10,7 @@ export const addUsersToCacheMiddleware = async (req: Request, res: Response, nex
     if (cachedData) {
         const users = JSON.parse(cachedData)
         console.log('Cache hit');
-        return res.status(400).json({
+        return res.status(200).json({
             status: STATUS_SUCCESS,
             data: {
                 users,
