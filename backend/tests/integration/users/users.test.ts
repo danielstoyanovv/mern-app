@@ -31,7 +31,7 @@ describe("Test users api",  function() {
         if (response.ok) {
             expect(response.status).toBe(201);
             json.then(async result => {
-                expect(result.message).toEqual("New user registered successfully");
+                expect(result.message).toEqual("Successfully registration");
                 expect(result.data._id).not.toBeNull();
             })
         }
@@ -53,7 +53,7 @@ describe("Test users api",  function() {
         if (response.ok) {
             expect(response.status).toBe(201);
             json.then(async result => {
-                expect(result.message).toEqual("New user registered successfully");
+                expect(result.message).toEqual("Successfully registration");
                 expect(result.data._id).not.toBeNull();
                 const getUserResponse = await fetch(API_URL + "/" + result.data._id)
                 const userJson = await getUserResponse.json()
@@ -95,7 +95,7 @@ describe("Test users api",  function() {
             const jsonUserWithoutAdminRole = responseUserWithoutAdminRole.json()
             expect(responseUserWithoutAdminRole.status).toBe(201);
             jsonUserWithoutAdminRole.then(async result => {                
-                expect(result.message).toEqual("New user registered successfully");
+                expect(result.message).toEqual("Successfully registration");
                 expect(result.data._id).not.toBeNull();
                 const responseLogin = await fetch(API_LOGIN, {
                     method: "POST",
@@ -137,7 +137,7 @@ describe("Test users api",  function() {
         expect(responseUserWithAdminRole.status).toBe(201);
         const jsonUserWithAdminRole = responseUserWithAdminRole.json()
         jsonUserWithAdminRole.then(async result => {
-            expect(result.message).toEqual("New user registered successfully");
+            expect(result.message).toEqual("Successfully registration");
             expect(result.data._id).not.toBeNull();
             const responseLogin = await fetch(API_LOGIN, {
                 method: "POST",
@@ -179,7 +179,7 @@ describe("Test users api",  function() {
         expect(responseUserWithAdminRole.status).toBe(201);
         const jsonUserWithAdminRole = responseUserWithAdminRole.json()
         jsonUserWithAdminRole.then(async result => {
-            expect(result.message).toEqual("New user registered successfully");
+            expect(result.message).toEqual("Successfully registration");
             expect(result.data._id).not.toBeNull();
             const responseLogin = await fetch(API_LOGIN, {
                 method: "POST",
