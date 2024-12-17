@@ -84,7 +84,9 @@ export const deleteUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         await User.findOneAndDelete({_id: id})
-        redisClient.del("users")
+        await redisClient.del("users")
+        const cacheKey = "user_" + id
+        await redisClient.del(cacheKey)
         res.status(200).json({
             status: STATUS_SUCCESS,
             data: [],
@@ -112,7 +114,9 @@ export const updateUser = async (req: Request, res: Response) => {
         const user = await User
         .findById(id)
         .exec()
-        redisClient.del("users")
+        await redisClient.del("users")
+        const cacheKey = "user_" + id
+        await redisClient.del(cacheKey)
         res.status(200).json({
             status: STATUS_SUCCESS, 
             data: user,
