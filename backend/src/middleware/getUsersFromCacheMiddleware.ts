@@ -3,9 +3,11 @@
 import {Request, Response, NextFunction } from "express";
 import { STATUS_SUCCESS } from "../constants/data"
 import {RedisServerService} from "../services/RedisServerService";
-
 export const getUsersFromCacheMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const redisClient = new RedisServerService().getRedisClient
+    if (req.query.limit) {
+        await redisClient.del("users")
+    }
     const cachedData = await redisClient.get("users");
     if (cachedData) {
         const users = JSON.parse(cachedData)
