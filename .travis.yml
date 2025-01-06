@@ -5,7 +5,6 @@ services:
 before_install:
   - cd frontend
   - docker build -t danielstoyanovv/mern-app -f Dockerfile .
-    .
 
 script:
   - cd frontend
