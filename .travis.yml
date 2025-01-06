@@ -8,4 +8,4 @@ before_install:
 
 script:
   - cd backend
-  - docker run -e CI=true danielstoyanovv/mern-app npm test
+  - docker run danielstoyanovv/mern-app npm test
