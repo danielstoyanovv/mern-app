@@ -3,9 +3,9 @@ services:
   - docker
 
 before_install:
-  - cd frontend
+  - cd backend
   - docker build -t danielstoyanovv/mern-app -f Dockerfile .
 
 script:
-  - cd frontend
-  - docker run danielstoyanovv/mern-app npm run test -- --coverage
+  - cd backend
+  - docker run danielstoyanovv/mern-app npm test -- --coverage
