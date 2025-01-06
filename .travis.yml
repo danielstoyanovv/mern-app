@@ -5,7 +5,4 @@ services:
 before_install:
   - cd backend
   - docker build -t danielstoyanovv/mern-app -f Dockerfile .
-
-script:
-  - cd backend
   - docker run danielstoyanovv/mern-app npm test
