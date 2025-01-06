@@ -4,7 +4,7 @@ services:
 
 before_install:
   - cd backend
-  - docker build -t danielstoyanovv/mern-app .
+  - docker build -t danielstoyanovv/mern-app Dockerfile .
 
 script:
   - cd backend
