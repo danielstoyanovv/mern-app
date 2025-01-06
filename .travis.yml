@@ -4,7 +4,7 @@ services:
 
 before_install:
   - cd backend
-  - npm ci
+  - npm i
 
 script:
   - cd backend
