@@ -9,7 +9,7 @@ import {
     MESSEGE_ERROR,
     MESSEGE_INTERNAL_SERVER_ERROR,
     STATUS_OK,
-    STATUS_PATH,
+    STATUS_PATCH,
     STATUS_NO_CONTENT,
     STATUS_CREATED,
     STATUS_INTERNAL_SERVER_ERROR
@@ -124,7 +124,7 @@ export const updateUser = async (req: Request, res: Response) => {
         await redisClient.del("users")
         const cacheKey = "user_" + id
         await redisClient.del(cacheKey)
-        res.status(STATUS_PATH).json({
+        res.status(STATUS_PATCH).json({
             status: MESSEGE_SUCCESS,
             data: user,
             message: ""
