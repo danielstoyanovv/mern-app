@@ -16,7 +16,7 @@ describe("Test users api",  function() {
         })
         expect(notValidResponse.status).toBe(400);
         const user = {
-            email: "test_create_user@abv.bg",
+            email: "test_create_" + Math.random().toString(16).substr(2, 8) + "@abv.bg",
             password: "123456",
             role: "admin"
         }
