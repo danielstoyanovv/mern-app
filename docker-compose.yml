@@ -12,12 +12,12 @@ services:
     restart: unless-stopped
   api:
     build:
-      context: ./backend
+      context: ./server
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file: ./backend/.env
+    env_file: ./server/.env
     volumes:
-      - ./backend:/app
+      - ./server:/app
       - /app/node_modules
     ports:
       - 4000:4000
@@ -25,13 +25,13 @@ services:
       - mern-app
     depends_on:
       - mongo
-  frontend:
+  client:
     build:
-      context: ./frontend
+      context: ./client
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./frontend:/app
+      - ./client:/app
       - /app/node_modules
     networks:
       - mern-app

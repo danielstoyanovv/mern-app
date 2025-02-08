@@ -1,10 +1,8 @@
 "use strict";
 
 import express from "express"
-import {config} from "dotenv"
-config()
+require('dotenv').config();
 import {ConnectToDatabase} from "./config/ConnectToDatabase";
-import { Request, Response } from "express"
 import {validateUserRequestMiddleware} from "./middleware/validateUserRequestMiddleware";
 import {
     createUser,
@@ -23,29 +21,22 @@ import {getUserFromCacheMiddleware} from "./middleware/getUserFromCacheMiddlewar
 const app = express()
 
 const port = process.env.BACKED_PORT || 4000
+const API_PREFIX = process.env.API_PREFIX || "api"
+const API_VERSION = process.env.API_VERSION || "v1"
 
 app.use(express.json())
 
-app.get('/', (req: Request, res: Response) => {
-    res.json({mssg: 'Welcome to the app'})
-})
+app.post("/" + API_PREFIX + "/" + API_VERSION + "/users", validateUserRequestMiddleware, existsUserMiddleware, createUser);
 
-app.post("/admin", (req: Request, res: Response) => {
-    const { username } = req.body;
-    res.send(`This is an Admin Route. Welcome ${username}`);
-});
+app.patch("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", validateUserRequestMiddleware, verifyEmailMiddleware, VerifyTokenMiddleware, updateUser)
 
-app.post("/api/users", validateUserRequestMiddleware, existsUserMiddleware, createUser);
+app.delete("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", VerifyTokenMiddleware, deleteUser)
 
-app.patch('/api/users/:id', validateUserRequestMiddleware, verifyEmailMiddleware, VerifyTokenMiddleware, updateUser)
+app.post("/" + API_PREFIX + "/" + API_VERSION + "/login", validateUserRequestMiddleware, loginUser)
 
-app.delete('/api/users/:id', VerifyTokenMiddleware, deleteUser)
+app.get("/" + API_PREFIX + "/" + API_VERSION +  "/users", getUsersFromCacheMiddleware, getUsers);
 
-app.post('/api/login', validateUserRequestMiddleware, loginUser)
-
-app.get("/api/users", getUsersFromCacheMiddleware, getUsers);
-
-app.get('/api/users/:id', getUserFromCacheMiddleware, getUser)
+app.get("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", getUserFromCacheMiddleware, getUser)
 
 app.listen(port, () => {
     console.log('listening on port', port)
