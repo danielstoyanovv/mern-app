@@ -11,7 +11,7 @@ import {
     getUsers,
     getUser
 } from "./controllers/userController";
-import {VerifyTokenMiddleware} from "./middleware/verifyTokenMiddleware";
+import {authMiddleware} from "./middleware/authMiddleware";
 import { existsUserMiddleware } from "./middleware/existsUserMiddleware";
 import { verifyEmailMiddleware } from "./middleware/verifyEmailMiddleware";
 import {loginUser} from "./controllers/authenticationController";
@@ -28,9 +28,9 @@ app.use(express.json())
 
 app.post("/" + API_PREFIX + "/" + API_VERSION + "/users", validateUserRequestMiddleware, existsUserMiddleware, createUser);
 
-app.patch("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", validateUserRequestMiddleware, verifyEmailMiddleware, VerifyTokenMiddleware, updateUser)
+app.patch("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", validateUserRequestMiddleware, verifyEmailMiddleware, authMiddleware, updateUser)
 
-app.delete("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", VerifyTokenMiddleware, deleteUser)
+app.delete("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", authMiddleware , deleteUser)
 
 app.post("/" + API_PREFIX + "/" + API_VERSION + "/login", validateUserRequestMiddleware, loginUser)
 
