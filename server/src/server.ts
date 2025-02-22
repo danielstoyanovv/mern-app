@@ -3,7 +3,7 @@
 import express from "express"
 require('dotenv').config();
 import {ConnectToDatabase} from "./config/ConnectToDatabase";
-import {validateUserRequestMiddleware} from "./middleware/validateUserRequestMiddleware";
+import {validateUserRequestMiddleware} from "./middlewares/validateUserRequestMiddleware";
 import {
     createUser,
     updateUser,
@@ -11,12 +11,12 @@ import {
     getUsers,
     getUser
 } from "./controllers/userController";
-import {authMiddleware} from "./middleware/authMiddleware";
-import { existsUserMiddleware } from "./middleware/existsUserMiddleware";
-import { verifyEmailMiddleware } from "./middleware/verifyEmailMiddleware";
+import {authMiddleware} from "./middlewares/authMiddleware";
+import { existsUserMiddleware } from "./middlewares/existsUserMiddleware";
+import { verifyEmailMiddleware } from "./middlewares/verifyEmailMiddleware";
 import {loginUser} from "./controllers/authenticationController";
-import {getUsersFromCacheMiddleware} from "./middleware/getUsersFromCacheMiddleware";
-import {getUserFromCacheMiddleware} from "./middleware/getUserFromCacheMiddleware";
+import {getUsersFromCacheMiddleware} from "./middlewares/getUsersFromCacheMiddleware";
+import {getUserFromCacheMiddleware} from "./middlewares/getUserFromCacheMiddleware";
 import helmet from "helmet";
 import cors from "cors"
 
