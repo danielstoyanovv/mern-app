@@ -3,16 +3,19 @@
 import User from '../models/userModel'
 import { Request, Response } from "express"
 import {config} from "dotenv"
+config()
 import {
     MESSEGE_SUCCESS,
     MESSEGE_ERROR,
     MESSEGE_INTERNAL_SERVER_ERROR,
     STATUS_INTERNAL_SERVER_ERROR,
     STATUS_UNAUTHORIZED
-
 } from "../constants/data"
 import { TokenService } from "../services/TokenService";
-config()
+import {LoggerService} from "../services/LoggerService";
+
+const logger = new LoggerService().createLogger()
+
 export const loginUser = async ( req: Request,  res: Response) => {
     const { email, password, role } = req.body;
     const INVALID_EMAIL_PASSWORD = "Invalid email or password";
@@ -56,7 +59,7 @@ export const loginUser = async ( req: Request,  res: Response) => {
             message: ""
         });
     } catch (error) {
-        console.log(error)
+        logger.error(error)
         res.status(STATUS_INTERNAL_SERVER_ERROR).json({
             status: MESSEGE_ERROR,
             data: [],
