@@ -17,6 +17,8 @@ import { verifyEmailMiddleware } from "./middleware/verifyEmailMiddleware";
 import {loginUser} from "./controllers/authenticationController";
 import {getUsersFromCacheMiddleware} from "./middleware/getUsersFromCacheMiddleware";
 import {getUserFromCacheMiddleware} from "./middleware/getUserFromCacheMiddleware";
+import helmet from "helmet";
+import cors from "cors"
 
 const app = express()
 
@@ -25,6 +27,10 @@ const API_PREFIX = process.env.API_PREFIX || "api"
 const API_VERSION = process.env.API_VERSION || "v1"
 
 app.use(express.json())
+
+app.use(helmet())
+
+app.use(cors())
 
 app.post("/" + API_PREFIX + "/" + API_VERSION + "/users", validateUserRequestMiddleware, existsUserMiddleware, createUser);
 

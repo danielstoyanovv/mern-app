@@ -15,17 +15,21 @@ import {
     STATUS_INTERNAL_SERVER_ERROR
 } from "../constants/data"
 require('dotenv').config();
+import {LoggerService} from "../services/LoggerService";
+
 const API_PREFIX = process.env.API_PREFIX || "api"
 const API_VERSION = process.env.API_VERSION || "v1"
-
 const redisClient = new RedisServerService().getRedisClient
+const logger = new LoggerService().createLogger()
 export const getUsers = async ( req: Request,  res: Response) => {
     try {
         const limit = req.query.limit ?? null
         const users = await User
             .find()
+            .select("email role")
             .sort({ createdAt: -1 })
             .limit(limit)
+            .lean()
         req.query.limit != undefined ? await redisClient.del("users") : await redisClient.setEx("users", 600, JSON.stringify(users));
         res.status(STATUS_OK).json({
             status: MESSEGE_SUCCESS,
@@ -36,6 +40,7 @@ export const getUsers = async ( req: Request,  res: Response) => {
             message: ""
         })
     } catch (error) {
+        logger.error(error)
         res.status(STATUS_INTERNAL_SERVER_ERROR).json({
             status: MESSEGE_ERROR,
             data: [],
@@ -49,7 +54,7 @@ export const createUser = async ( req: Request,  res: Response) => {
         const { email, role } = req.body;
         /* We Crypt the user's password  */
         const password = await bcrypt.hash(req.body.password, 10);
-        redisClient.del("users")
+        await redisClient.del("users")
         const user = await User.create({email, password, role})
         const resourcesURI = "/" + API_PREFIX + "/" + API_VERSION + "/users/" + user._id
         res.status(STATUS_CREATED).json({
@@ -58,7 +63,7 @@ export const createUser = async ( req: Request,  res: Response) => {
             message: "Successfully registration"
         });
     } catch (error) {
-        console.log(error)
+        logger.error(error)
         res.status(STATUS_INTERNAL_SERVER_ERROR).json({
             status: MESSEGE_ERROR,
             data: [],
@@ -81,6 +86,7 @@ export const getUser = async (req: Request, res: Response) => {
             message: ""
         })
     } catch (error) {
+        logger.error(error)
         return res.status(STATUS_INTERNAL_SERVER_ERROR).json({
             status: MESSEGE_ERROR,
             data: [],
@@ -99,7 +105,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         await redisClient.del(cacheKey)
         res.status(STATUS_NO_CONTENT).send(); // No content response
     } catch (error) {
-        console.log(error)
+        logger.error(error)
         res.status(STATUS_INTERNAL_SERVER_ERROR).json({
             status: MESSEGE_ERROR,
             data: [],
@@ -130,6 +136,7 @@ export const updateUser = async (req: Request, res: Response) => {
             message: ""
         })
     } catch (error) {
+        logger.error(error)
         res.status(STATUS_INTERNAL_SERVER_ERROR).json({
             status: MESSEGE_ERROR,
             data: [],
