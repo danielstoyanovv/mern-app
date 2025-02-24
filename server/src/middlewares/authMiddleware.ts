@@ -8,9 +8,10 @@ import {
     STATUS_FORBIDDEN
 } from "../constants/data"
 import {TokenManager} from "../utils/TokenManager";
+import {LoggerService} from "../services/LoggerService";
 
 const tokenManager = new TokenManager()
-
+const logger = new LoggerService().createLogger()
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'] || false
     if (!token) {
@@ -41,7 +42,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
                 });
             }
         } catch(error) {
-            console.log(error)    
+            logger.error(error)
         }
     }
     next();
