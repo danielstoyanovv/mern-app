@@ -1,23 +1,27 @@
 "use strict";
 
 import {Request, Response, NextFunction } from "express";
-import emailValidator from "email-validator";
+import {UserRequestValidator} from "../utils/UserRequestValidator";
 import {
     MESSEGE_ERROR,
     STATUS_BAD_REQUEST
 } from "../constants/data"
 
-export const validateUserRequestMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    const ROLES = ['admin', 'user']
+export const userRequestValidatorMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password, role } = req.body;
+    const validator = new UserRequestValidator()
+        .setEmail(email)
+        .setPassword(password)
+        .setRole(role)
+
     const validationErrors = [];
-    if (!emailValidator.validate(email)) {
+    if (!validator.isEmailValid()) {
         validationErrors.push('email is not valid ')
     }
-    if (!password || password.length > 20 || password.length < 6) {
+    if (!password || !validator.isPasswordValid()) {
         validationErrors.push("password is not valid ");
     }
-    if (!role || !ROLES.includes(role) ) {
+    if (!role || !validator.isRoleValid()) {
         validationErrors.push("role is not valid, valid roles: 'admin', 'user' ")
     }
     if (validationErrors.length > 0) {

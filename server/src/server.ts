@@ -3,7 +3,7 @@
 import express from "express"
 require('dotenv').config();
 import {ConnectToDatabase} from "./config/ConnectToDatabase";
-import {validateUserRequestMiddleware} from "./middlewares/validateUserRequestMiddleware";
+import {userRequestValidatorMiddleware} from "./middlewares/userRequestValidatorMiddleware";
 import {
     createUser,
     updateUser,
@@ -12,7 +12,7 @@ import {
     getUser
 } from "./controllers/userController";
 import {authMiddleware} from "./middlewares/authMiddleware";
-import { existsUserMiddleware } from "./middlewares/existsUserMiddleware";
+import { userExistsMiddleware } from "./middlewares/userExistsMiddleware";
 import { verifyEmailMiddleware } from "./middlewares/verifyEmailMiddleware";
 import {loginUser} from "./controllers/authenticationController";
 import {getUsersFromCacheMiddleware} from "./middlewares/getUsersFromCacheMiddleware";
@@ -32,13 +32,13 @@ app.use(helmet())
 
 app.use(cors())
 
-app.post("/" + API_PREFIX + "/" + API_VERSION + "/users", validateUserRequestMiddleware, existsUserMiddleware, createUser);
+app.post("/" + API_PREFIX + "/" + API_VERSION + "/users", userRequestValidatorMiddleware, userExistsMiddleware, createUser);
 
-app.patch("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", validateUserRequestMiddleware, verifyEmailMiddleware, authMiddleware, updateUser)
+app.patch("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", userRequestValidatorMiddleware, verifyEmailMiddleware, authMiddleware, updateUser)
 
 app.delete("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", authMiddleware , deleteUser)
 
-app.post("/" + API_PREFIX + "/" + API_VERSION + "/login", validateUserRequestMiddleware, loginUser)
+app.post("/" + API_PREFIX + "/" + API_VERSION + "/login", userRequestValidatorMiddleware, loginUser)
 
 app.get("/" + API_PREFIX + "/" + API_VERSION +  "/users", getUsersFromCacheMiddleware, getUsers);
 
