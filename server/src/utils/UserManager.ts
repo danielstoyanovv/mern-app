@@ -15,11 +15,19 @@ export class UserManager {
     }
 
     /**
+     * Get user email
+     * @return {string}
+     */
+    getEmail() {
+        return this.#email
+    }
+
+    /**
      * Check Is authentication token expired
      * @return {boolean}
      */
     async emailExists() {
-        const existsUser = await User.findOne({'email': this.#email}, 'email').exec();
+        const existsUser = await User.findOne({'email': this.getEmail()}, 'email').exec();
         if (existsUser && existsUser.email) {
             return true
         }
