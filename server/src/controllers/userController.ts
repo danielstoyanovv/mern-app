@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express"
 const bcrypt = require("bcrypt")
-import {RedisServerService} from "../services/RedisServerService";
+import {RedisService} from "../services/RedisService";
 import {
     MESSEGE_SUCCESS,
     MESSEGE_ERROR,
@@ -19,7 +19,7 @@ import {UserManager} from "../utils/UserManager";
 
 const API_PREFIX = process.env.API_PREFIX || "api"
 const API_VERSION = process.env.API_VERSION || "v1"
-const redisClient = new RedisServerService().getRedisClient
+const redisClient = new RedisService().createClient()
 const logger = new LoggerService().createLogger()
 const manager = new UserManager()
 export const getUsers = async ( req: Request,  res: Response) => {
