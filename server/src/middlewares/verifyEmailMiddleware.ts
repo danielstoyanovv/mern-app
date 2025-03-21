@@ -1,18 +1,19 @@
 "use strict";
 
 import {Request, Response, NextFunction } from "express";
-import User from "../models/userModel";
 import {
     STATUS_BAD_REQUEST
 } from "../constants/data"
 import {UserManager} from "../utils/UserManager";
 
+const manager = new UserManager()
+
 export const verifyEmailMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { email } = req.body;
-    const user = await User
-    .findById(id)
-    .exec()
+    const user = await manager
+        .setId(id)
+        .getUser()
     if (user.email !== email) {
         const manager = new UserManager()
             .setEmail(email)
