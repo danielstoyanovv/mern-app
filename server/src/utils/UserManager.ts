@@ -174,4 +174,13 @@ export class UserManager {
             .findById(this.getId())
             .exec()
     }
+
+    /**
+     * Get user by email
+     * @return {object}
+     */
+    async getUserByEmail() {
+        const email = this.getEmail()
+        return await User.findOne({ email });
+    }
 }

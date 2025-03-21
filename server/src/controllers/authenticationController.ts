@@ -1,6 +1,5 @@
 "use strict";
 
-import User from '../models/userModel'
 import { Request, Response } from "express"
 import {config} from "dotenv"
 config()
@@ -13,14 +12,18 @@ import {
 } from "../constants/data"
 import { TokenService } from "../services/TokenService";
 import {LoggerService} from "../services/LoggerService";
+import {UserManager} from "../utils/UserManager";
 
 const logger = new LoggerService().createLogger()
+const manager = new UserManager()
 
 export const loginUser = async ( req: Request,  res: Response) => {
     const { email, password, role } = req.body;
     const INVALID_EMAIL_PASSWORD = "Invalid email or password";
     try {
-        const user = await User.findOne({ email });
+        const user = await manager
+            .setEmail(email)
+            .getUserByEmail()
         if (!user) {
             return res.status(STATUS_UNAUTHORIZED).json({
                 status: MESSEGE_ERROR,
