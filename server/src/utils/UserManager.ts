@@ -82,7 +82,7 @@ export class UserManager {
     }
 
     /**
-     * Check Is authentication token expired
+     * Check if user with specified email exists
      * @return {boolean}
      */
     async emailExists() {
