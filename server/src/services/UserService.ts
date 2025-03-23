@@ -1,8 +1,10 @@
 "use strict";
 
-import User from "../models/userModel";
+import {UserRepository} from "../repositories/UserRepository";
 
-export class UserManager {
+const repository = new UserRepository()
+
+export class UserService {
     #email: string
     #role: string
     #password: string
@@ -86,11 +88,10 @@ export class UserManager {
      * @return {boolean}
      */
     async emailExists() {
-        const existsUser = await User.findOne({'email': this.getEmail()}, 'email').exec();
-        if (existsUser && existsUser.email) {
-            return true
-        }
-        return false
+        const user = await repository
+            .findByField(this.getEmail())
+
+        return !!user
     }
 
     /**
@@ -118,10 +119,8 @@ export class UserManager {
      * @return {object}
      */
     async createUser() {
-        const email = this.getEmail()
-        const password = this.getPassword()
-        const role = this.getRole()
-        return await User.create({email, password, role})
+        return await repository
+            .createUser(this.getEmail(), this.getPassword(), this.getRole())
     }
 
     /**
@@ -129,12 +128,8 @@ export class UserManager {
      * @return {object}
      */
     async getUsers() {
-        return await User
-            .find()
-            .select("email role")
-            .sort({createdAt: -1})
-            .limit(this.getLimit())
-            .lean()
+        return await repository
+            .findAll(this.getLimit())
     }
 
     /**
@@ -142,9 +137,7 @@ export class UserManager {
      * @return {object}
      */
     async getUser() {
-        return await User
-            .findById(this.getId())
-            .exec()
+       return await repository.findById(this.getId())
     }
 
     /**
@@ -152,7 +145,7 @@ export class UserManager {
      * @return {void}
      */
     async deleteUser() {
-        await User.findOneAndDelete({_id: this.getId()})
+        await repository.deleteUser(this.getId())
     }
 
 
@@ -162,17 +155,8 @@ export class UserManager {
      */
 
     async updateUser() {
-        const email = this.getEmail()
-        const role = this.getRole()
-        const password = this.getPassword()
-        await User.findOneAndUpdate({_id: this.getId()}, {
-            email,
-            role,
-            password
-        })
-        return await User
-            .findById(this.getId())
-            .exec()
+      return await repository
+          .updateUser(this.getId(), this.getEmail(), this.getRole(), this.getPassword())
     }
 
     /**
@@ -180,7 +164,7 @@ export class UserManager {
      * @return {object}
      */
     async getUserByEmail() {
-        const email = this.getEmail()
-        return await User.findOne({ email });
+        return await repository
+            .findByField(this.getEmail())
     }
 }

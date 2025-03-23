@@ -5,13 +5,13 @@ import {
     MESSEGE_ERROR,
     STATUS_BAD_REQUEST
 } from "../constants/data"
-import {UserManager} from "../utils/UserManager";
+import {UserService} from "../services/UserService";
 
 export async function userExistsMiddleware(req: Request, res: Response, next: NextFunction) {
     const { email } = req.body;
-    const manager = new UserManager()
+    const service = new UserService()
         .setEmail(email)
-    const existsUser = await manager.emailExists()
+    const existsUser = await service.emailExists()
     if (existsUser) {
         return res.status(STATUS_BAD_REQUEST).json({
             status: MESSEGE_ERROR,

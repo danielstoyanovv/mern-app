@@ -12,16 +12,16 @@ import {
 } from "../constants/data"
 import { TokenService } from "../services/TokenService";
 import {LoggerService} from "../services/LoggerService";
-import {UserManager} from "../utils/UserManager";
+import {UserService} from "../services/UserService";
 
 const logger = new LoggerService().createLogger()
-const manager = new UserManager()
+const service = new UserService()
 
 export const loginUser = async ( req: Request,  res: Response) => {
     const { email, password, role } = req.body;
     const INVALID_EMAIL_PASSWORD = "Invalid email or password";
     try {
-        const user = await manager
+        const user = await service
             .setEmail(email)
             .getUserByEmail()
         if (!user) {

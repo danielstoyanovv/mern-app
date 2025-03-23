@@ -15,17 +15,17 @@ import {
 } from "../constants/data"
 require('dotenv').config();
 import {LoggerService} from "../services/LoggerService";
-import {UserManager} from "../utils/UserManager";
+import {UserService} from "../services/UserService";
 
 const API_PREFIX = process.env.API_PREFIX || "api"
 const API_VERSION = process.env.API_VERSION || "v1"
 const redisClient = new RedisService().createClient()
 const logger = new LoggerService().createLogger()
-const manager = new UserManager()
+const service = new UserService()
 export const getUsers = async ( req: Request,  res: Response) => {
     try {
         const limit: any = req.query.limit ?? null
-        const users = manager
+        const users = service
             .setLimit(limit)
             .getUsers()
         users.then(async result => {
@@ -55,7 +55,7 @@ export const createUser = async ( req: Request,  res: Response) => {
         const { email, role } = req.body;
         /* We Crypt the user's password  */
         const password = await bcrypt.hash(req.body.password, 10);
-        const user = await manager
+        const user = await service
             .setEmail(email)
             .setRole(role)
             .setPassword(password)
@@ -80,7 +80,7 @@ export const createUser = async ( req: Request,  res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const user = await manager
+        const user = await service
             .setId(id)
             .getUser()
         const cacheKey = "user_" + id
@@ -104,7 +104,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        await manager
+        await service
             .setId(id)
             .deleteUser()
         await redisClient.del("users")
@@ -128,7 +128,7 @@ export const updateUser = async (req: Request, res: Response) => {
         /* We Crypt the user's password  */
         const password = await bcrypt.hash(req.body.password, 10);
         const { email, role  } = req.body;
-        const user = await manager
+        const user = await service
             .setId(id)
             .setEmail(email)
             .setRole(role)
