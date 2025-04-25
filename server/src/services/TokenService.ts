@@ -1,12 +1,12 @@
 "use strict";
 
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 import {config} from "dotenv"
 config()
 export class TokenService {
-    #userId: number
-    #userEmail: string
-    #userRole: string
+    #userId: string = ""
+    #userEmail: string = ""
+    #userRole: string = ""
     /**
      * Get token
      * @return {string}
@@ -22,10 +22,10 @@ export class TokenService {
     }
     /**
      * Set user id
-     * @param {number} userId
+     * @param {strings} userId
      * @return {this}
      */
-    setUserId(userId: number) {
+    setUserId(userId: string) {
         this.#userId = userId;
         return this
     }

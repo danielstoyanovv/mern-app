@@ -1,10 +1,8 @@
 "use strict";
 
 import {Request, Response, NextFunction } from "express";
-import {
-    STATUS_BAD_REQUEST
-} from "../constants/data"
 import {UserService} from "../services/UserService";
+import {BadRequestError} from "../errors/bad-request-error";
 
 const service = new UserService()
 
@@ -19,7 +17,7 @@ export const verifyEmailMiddleware = async (req: Request, res: Response, next: N
             .setEmail(email)
         const existsUser = await manager.emailExists()
         if (existsUser) {
-            return res.status(STATUS_BAD_REQUEST).json({error: "User already exists"})
+            throw new BadRequestError("User exists!")
         }        
     }
     next();

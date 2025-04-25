@@ -2,33 +2,27 @@
 
 import express, {Request, Response} from "express";
 import {
-    MESSEGE_SUCCESS,
-    STATUS_OK
+    STATUS_NO_CONTENT,
 } from "../../constants/data";
 import {UserService} from "../../services/UserService";
 import {RedisService} from "../../services/RedisService";
-import {getCachedUserMiddleware} from "../../middlewares/getCachedUserMiddleware";
-
 const service = new UserService()
 const redisClient = new RedisService().createClient()
+import {authMiddleware} from "../../middlewares/authMiddleware";
 
 const router = express.Router()
 
-router.get("/api/v1/users/:id", [
-    getCachedUserMiddleware
+router.delete("/api/v1/users/:id", [
+    authMiddleware
 ], async (req: Request, res: Response) => {
     const { id } = req.params
-    const user = await service
+    await service
         .setId(id)
-        .getUser()
+        .deleteUser()
+    await redisClient.del("users")
     const cacheKey = "user_" + id
-    await redisClient.setEx(cacheKey, 600, JSON.stringify(user)); // Cache data for 10 minutes
-    res.status(STATUS_OK).json({
-        status: MESSEGE_SUCCESS,
-        data: user,
-        message: ""
-    })
-
+    await redisClient.del(cacheKey)
+    res.status(STATUS_NO_CONTENT).send(); // No content response
 })
 
-export { router as oneUserRouter }
+export { router as deleteUserRouter }

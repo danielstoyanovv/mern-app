@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 require('dotenv').config();
 
 export class TokenManager {
-    #token: string
+    #token: string = ""
 
     /**
      * Set authentication token

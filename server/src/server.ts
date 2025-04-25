@@ -8,7 +8,9 @@ import helmet from "helmet";
 import cors from "cors"
 import {createUserRouter} from "./routes/users/create";
 import {allUsersRouter} from "./routes/users/all";
-import {oneUsersRouter} from "./routes/users/one";
+import {oneUserRouter} from "./routes/users/one";
+import {deleteUserRouter} from "./routes/users/delete";
+import {patchUserRouter} from "./routes/users/update";
 import {errorHandlerMiddleware} from "./middlewares/error-handlerMiddleware";
 
 const app = express()
@@ -37,7 +39,9 @@ app.use(cors())
 
 app.use(createUserRouter)
 app.use(allUsersRouter)
-app.use(oneUsersRouter)
+app.use(oneUserRouter)
+app.use(deleteUserRouter)
+app.use(patchUserRouter)
 app.use(errorHandlerMiddleware)
 
 app.listen(port, () => {
