@@ -1,9 +1,7 @@
 "use strict";
 
 import {
-    MESSEGE_SUCCESS,
-    MESSEGE_ERROR,
-    STATUS_UNAUTHORIZED
+    MESSEGE_SUCCESS
 } from "../../constants/data"
 import { TokenService } from "../../services/TokenService";
 import express, {Request, Response} from "express";
