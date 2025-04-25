@@ -12,6 +12,7 @@ import {oneUserRouter} from "./routes/users/one";
 import {deleteUserRouter} from "./routes/users/delete";
 import {patchUserRouter} from "./routes/users/update";
 import {errorHandlerMiddleware} from "./middlewares/error-handlerMiddleware";
+import {loginRouter} from "./routes/auth/login";
 
 const app = express()
 
@@ -42,6 +43,7 @@ app.use(allUsersRouter)
 app.use(oneUserRouter)
 app.use(deleteUserRouter)
 app.use(patchUserRouter)
+app.use(loginRouter)
 app.use(errorHandlerMiddleware)
 
 app.listen(port, () => {
