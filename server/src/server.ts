@@ -2,7 +2,7 @@
 
 import express from "express"
 require('dotenv').config();
-import {ConnectToDatabase} from "./config/ConnectToDatabase";
+import {MongoDbConnect} from "./config/MongoDbConnect";
 import {userRequestValidatorMiddleware} from "./middlewares/userRequestValidatorMiddleware";
 import {
     createUser,
@@ -48,4 +48,4 @@ app.listen(port, () => {
     console.log('listening on port', port)
 })
 
-const connection = new ConnectToDatabase()
+const database = new MongoDbConnect()
