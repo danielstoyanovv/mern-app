@@ -5,11 +5,11 @@ import {UserRepository} from "../repositories/UserRepository";
 const repository = new UserRepository()
 
 export class UserService {
-    #email: string
-    #role: string
-    #password: string
-    #limit: object
-    #id: string
+    #email: string = ""
+    #role: string = ""
+    #password: string = ""
+    #limit: object = Object()
+    #id: string = ""
 
     /**
      * Set user email

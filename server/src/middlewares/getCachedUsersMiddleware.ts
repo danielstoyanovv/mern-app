@@ -6,7 +6,7 @@ import {
     STATUS_OK
 } from "../constants/data"
 import {RedisService} from "../services/RedisService";
-export const getUsersFromCacheMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const getCachedUsersMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const redisClient = new RedisService().createClient()
     if (req.query.limit) {
         await redisClient.del("users")
