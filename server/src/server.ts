@@ -8,6 +8,7 @@ import helmet from "helmet";
 import cors from "cors"
 import {createUserRouter} from "./routes/users/create";
 import {allUsersRouter} from "./routes/users/all";
+import {oneUsersRouter} from "./routes/users/one";
 import {errorHandlerMiddleware} from "./middlewares/error-handlerMiddleware";
 
 const app = express()
@@ -32,10 +33,11 @@ app.use(cors())
 //
 // app.get("/" + API_PREFIX + "/" + API_VERSION +  "/users", getCachedUsersMiddleware, getUsers);
 //
-// app.get("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", getUserFromCacheMiddleware, getUser)
+// app.get("/" + API_PREFIX + "/" + API_VERSION + "/users/:id", getCachedUserMiddleware, getUser)
 
 app.use(createUserRouter)
 app.use(allUsersRouter)
+app.use(oneUsersRouter)
 app.use(errorHandlerMiddleware)
 
 app.listen(port, () => {

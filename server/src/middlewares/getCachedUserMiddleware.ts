@@ -7,7 +7,7 @@ import {
 } from "../constants/data"
 import {RedisService} from "../services/RedisService";
 
-export const getUserFromCacheMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const getCachedUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const cacheKey = "user_" + id
     const redisClient = new RedisService().createClient()
