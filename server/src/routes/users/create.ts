@@ -11,6 +11,9 @@ import {
 } from "../../constants/data";
 import {UserService} from "../../services/UserService";
 import {BadRequestError} from "../../errors/bad-request-error";
+import {RedisService} from "../../services/RedisService";
+
+const redisClient = new RedisService().createClient()
 
 const router = express.Router()
 
@@ -41,14 +44,15 @@ router.post("/api/v1/users", [
         .setRole(role)
         .getUserByEmail()
     if (exists) throw new BadRequestError("Email in use")
-
-    await service
+    const user = await service
         .setEmail(email)
         .setPassword(password)
         .createUser()
+    await redisClient.del("users")
+    const resourcesURI =  "/api/v1/users/" + user.id
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
-        data: [],
+        data: resourcesURI,
         message: "Successfully registration"
     })
 
