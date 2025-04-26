@@ -8,7 +8,7 @@ import express, {Request, Response} from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError} from "../../errors/request-validation-error";
 import {UserService} from "../../services/UserService";
-import {BadRequestError} from "../../errors/bad-request-error";
+import {UnauthorizedRequestError} from "../../errors/unauthorized-request-error";
 
 const service = new UserService()
 
@@ -40,15 +40,15 @@ router.post("/api/v1/login", [
             .setEmail(email)
             .getUserByEmail()
         if (!user) {
-            throw new BadRequestError(INVALID_EMAIL_PASSWORD)
+            throw new UnauthorizedRequestError(INVALID_EMAIL_PASSWORD)
         }
         const bcrypt = require("bcrypt")
         const result = await bcrypt.compare(password, user.password);
         if (!result) {
-            throw new BadRequestError(INVALID_EMAIL_PASSWORD)
+            throw new UnauthorizedRequestError(INVALID_EMAIL_PASSWORD)
         }
         if (user.role !== role) {
-            throw new BadRequestError("Role is not valid!")
+            throw new UnauthorizedRequestError("Role is not valid!")
         }
         const token = new TokenService()
             .setUserId(user._id)
