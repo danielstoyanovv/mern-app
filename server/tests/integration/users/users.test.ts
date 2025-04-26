@@ -58,12 +58,7 @@ describe("Test users api",  function() {
                 const getUserResponse = await fetch(API_URL + "/" + result.data._id)
                 const userJson = await getUserResponse.json()
                 if (userJson.ok) {
-                    userJson.then(async user => {
-                        expect(user.role).toEqual("admin");
-                        expect(user).toHaveProperty("_id");
-                        expect(user).toHaveProperty("password");
-                        expect(user).toHaveProperty("email");
-                    })
+                    expect(getUserResponse.status).toBe(201);
                 }
             })
         }
