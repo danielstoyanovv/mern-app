@@ -16,10 +16,8 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         const currentToken = tokenManager
             .setToken(token)
         const expired = currentToken.isExpired()
-        console.log(expired)
         if (expired) throw new ForbiddenRequestError("Invalid or expired token.")
         const isAdmin = currentToken.includesAdmin()
-        console.log(isAdmin)
         if (!isAdmin) throw new ForbiddenRequestError("Invalid or expired token, admins access required.")
     }
     next();
