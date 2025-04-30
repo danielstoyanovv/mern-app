@@ -9,9 +9,9 @@ import {
 import {UserService} from "../../services/UserService";
 import {RedisService} from "../../services/RedisService";
 import {authMiddleware} from "../../middlewares/authMiddleware";
-import {body, validationResult} from "express-validator";
-import {RequestValidationError} from "../../errors/request-validation-error";
+import {body} from "express-validator";
 import {verifyEmailMiddleware} from "../../middlewares/verifyEmailMiddleware";
+import {validateRequestMiddleware} from "../../middlewares/validate-requestMiddleware";
 
 const service = new UserService()
 const redisClient = new RedisService().createClient()
@@ -31,12 +31,9 @@ router.patch("/api/v1/users/:id", [
         .isLength({ min: 4, max: 20 })
         .withMessage("Role must be between 4 and 20 characters"),
     verifyEmailMiddleware,
-    authMiddleware
+    authMiddleware,
+    validateRequestMiddleware
 ], async (req: Request, res: Response) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        throw new RequestValidationError(errors.array())
-    }
     const { id } = req.params
     /* We Crypt the user's password  */
     const password = await bcrypt.hash(req.body.password, 10);
