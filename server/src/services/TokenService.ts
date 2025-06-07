@@ -8,7 +8,7 @@ export class TokenService {
     #userEmail: string = ""
     #userRole: string = ""
     /**
-     * Get token
+     * Get token data
      * @return {string}
      */
     get getToken() {
