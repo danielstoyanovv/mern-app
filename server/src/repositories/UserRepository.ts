@@ -4,7 +4,7 @@ import User from "../models/userModel";
 
 export class UserRepository {
     /**
-     * Create new user
+     * Create a new user
      * @param email
      * @param password
      * @param role
