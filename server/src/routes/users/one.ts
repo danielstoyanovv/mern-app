@@ -8,8 +8,9 @@ import {
 import {UserService} from "../../services/UserService";
 import {RedisService} from "../../services/RedisService";
 import {getCachedUserMiddleware} from "../../middlewares/getCachedUserMiddleware";
+import {UserRepository} from "../../repositories/UserRepository";
 
-const service = new UserService()
+const service = new UserService(new UserRepository)
 const redisClient = new RedisService().createClient()
 
 const router = express.Router()

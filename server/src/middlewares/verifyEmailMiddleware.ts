@@ -3,8 +3,9 @@
 import {Request, Response, NextFunction } from "express";
 import {UserService} from "../services/UserService";
 import {BadRequestError} from "../errors/bad-request-error";
+import {UserRepository} from "../repositories/UserRepository";
 
-const service = new UserService()
+const service = new UserService(new UserRepository)
 
 export const verifyEmailMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
