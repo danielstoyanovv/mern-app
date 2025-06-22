@@ -1,10 +1,9 @@
 "use strict";
 
 import {UserRepositoryInterface} from "../repositories/UserRepositoryInterface";
-import {UserServiceInterface} from "./UserServiceInterface";
+import {UserServiceinterface} from "./UserServiceInterface";
 
-
-export class UserService implements UserServiceInterface {
+export class UserService implements UserServiceinterface {
     email: string = ""
     role: string = ""
     password: string = ""

@@ -1,11 +1,12 @@
 "use strict";
 
 import jwt from "jsonwebtoken";
+import {TokenManagerInterface} from "./TokenManagerInterface";
 
 require('dotenv').config();
 
-export class TokenManager {
-    #token: string = ""
+export class TokenManager implements TokenManagerInterface {
+    token: string = ""
 
     /**
      * Set authentication token
@@ -13,7 +14,7 @@ export class TokenManager {
      * @return {this}
      */
     setToken(token: string) {
-        this.#token = token
+        this.token = token
         return this
     }
 
@@ -22,7 +23,7 @@ export class TokenManager {
      * @return {string}
      */
     getToken() {
-        return this.#token
+        return this.token
     }
 
     /**

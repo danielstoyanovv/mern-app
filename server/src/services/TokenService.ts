@@ -2,11 +2,15 @@
 
 import jwt from "jsonwebtoken"
 import {config} from "dotenv"
+import {TokenServiceInterface} from "./TokenServiceInterface";
+
 config()
-export class TokenService {
-    #userId: string = ""
-    #userEmail: string = ""
-    #userRole: string = ""
+
+export class TokenService implements TokenServiceInterface {
+    userId: string = ""
+    userEmail: string = ""
+    userRole: string = ""
+
     /**
      * Get token
      * @return {string}
@@ -20,52 +24,58 @@ export class TokenService {
             expiresIn: 180
         })
     }
+
     /**
      * Set user id
      * @param {strings} userId
      * @return {this}
      */
     setUserId(userId: string) {
-        this.#userId = userId;
+        this.userId = userId;
         return this
     }
+
     /**
      * get user id
      * @return {number}
      */
     getUserId() {
-        return this.#userId
+        return this.userId
     }
+
     /**
      * Set user email
      * @param {string} userEmail
      * @return {this}
      */
     setUserEmail(userEmail: string) {
-        this.#userEmail = userEmail
+        this.userEmail = userEmail
         return this
     }
+
     /**
      * get user email
      * @return {string}
      */
     getUserEmail() {
-        return this.#userEmail
+        return this.userEmail
     }
+
     /**
      * Set user role
      * @param {string} userRole
      * @return {this}
      */
     setUserRole(userRole: string) {
-        this.#userRole = userRole
+        this.userRole = userRole
         return this
     }
+
     /**
      * Get user role
      * @return {string}
      */
     getUserRole() {
-        return this.#userRole
+        return this.userRole
     }
 }

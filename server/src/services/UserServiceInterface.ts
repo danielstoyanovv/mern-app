@@ -1,6 +1,6 @@
 import {UserRepositoryInterface} from "../repositories/UserRepositoryInterface";
 
-export interface UserServiceInterface {
+export interface UserServiceinterface {
     email: string;
     role: string;
     password: string;
