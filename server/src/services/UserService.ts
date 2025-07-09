@@ -1,15 +1,19 @@
 "use strict";
 
-import {UserRepository} from "../repositories/UserRepository";
+import {UserRepositoryInterface} from "../repositories/UserRepositoryInterface";
+import {UserServiceinterface} from "./UserServiceInterface";
 
-const repository = new UserRepository()
+export class UserService implements UserServiceinterface {
+    email: string = ""
+    role: string = ""
+    password: string = ""
+    limit: object = Object()
+    id: string = ""
+    interface: UserRepositoryInterface;
 
-export class UserService {
-    #email: string = ""
-    #role: string = ""
-    #password: string = ""
-    #limit: object = Object()
-    #id: string = ""
+    constructor(repository: UserRepositoryInterface) {
+        this.interface = repository;
+    }
 
     /**
      * Set user email
@@ -17,7 +21,7 @@ export class UserService {
      * @return {this}
      */
     setEmail(email: string) {
-        this.#email = email
+        this.email = email
         return this
     }
 
@@ -26,7 +30,7 @@ export class UserService {
      * @return {string}
      */
     getEmail() {
-        return this.#email
+        return this.email
     }
 
     /**
@@ -35,7 +39,7 @@ export class UserService {
      * @return {this}
      */
     setRole(role: string) {
-        this.#role = role
+        this.role = role
         return this
     }
 
@@ -44,7 +48,7 @@ export class UserService {
      * @return {string}
      */
     getRole() {
-        return this.#role
+        return this.role
     }
 
     /**
@@ -53,7 +57,7 @@ export class UserService {
      * @return {this}
      */
     setPassword(password: string) {
-        this.#password = password
+        this.password = password
         return this
     }
 
@@ -62,7 +66,7 @@ export class UserService {
      * @return {string}
      */
     getPassword() {
-        return this.#password
+        return this.password
     }
 
     /**
@@ -71,7 +75,7 @@ export class UserService {
      * @return {this}
      */
     setId(id: string) {
-        this.#id = id
+        this.id = id
         return this
     }
 
@@ -80,7 +84,7 @@ export class UserService {
      * @return {string}
      */
     getId() {
-        return this.#id
+        return this.id
     }
 
     /**
@@ -88,7 +92,7 @@ export class UserService {
      * @return {boolean}
      */
     async emailExists() {
-        const user = await repository
+        const user = await this.interface
             .findByField(this.getEmail())
 
         return !!user
@@ -100,7 +104,7 @@ export class UserService {
      * @return {this}
      */
     setLimit(limit: object) {
-        this.#limit = limit
+        this.limit = limit
         return this
     }
 
@@ -109,9 +113,8 @@ export class UserService {
      * @return {object}
      */
     getLimit() {
-        return this.#limit
+        return this.limit
     }
-
 
 
     /**
@@ -119,7 +122,7 @@ export class UserService {
      * @return {object}
      */
     async createUser() {
-        return await repository
+        return await this.interface
             .createUser(this.getEmail(), this.getPassword(), this.getRole())
     }
 
@@ -128,7 +131,7 @@ export class UserService {
      * @return {object}
      */
     async getUsers() {
-        return await repository
+        return await this.interface
             .findAll(this.getLimit())
     }
 
@@ -137,7 +140,8 @@ export class UserService {
      * @return {object}
      */
     async getUser() {
-       return await repository.findById(this.getId())
+        return await this.interface
+            .findById(this.getId())
     }
 
     /**
@@ -145,7 +149,8 @@ export class UserService {
      * @return {void}
      */
     async deleteUser() {
-        await repository.deleteUser(this.getId())
+        await this.interface
+            .deleteUser(this.getId())
     }
 
 
@@ -155,8 +160,8 @@ export class UserService {
      */
 
     async updateUser() {
-      return await repository
-          .updateUser(this.getId(), this.getEmail(), this.getRole(), this.getPassword())
+        return await this.interface
+            .updateUser(this.getId(), this.getEmail(), this.getRole(), this.getPassword())
     }
 
     /**
@@ -164,7 +169,7 @@ export class UserService {
      * @return {object}
      */
     async getUserByEmail() {
-        return await repository
+        return await this.interface
             .findByField(this.getEmail())
     }
 }

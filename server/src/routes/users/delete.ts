@@ -6,9 +6,11 @@ import {
 } from "../../constants/data";
 import {UserService} from "../../services/UserService";
 import {RedisService} from "../../services/RedisService";
-const service = new UserService()
-const redisClient = new RedisService().createClient()
 import {authMiddleware} from "../../middlewares/authMiddleware";
+import {UserRepository} from "../../repositories/UserRepository";
+
+const service = new UserService(new UserRepository)
+const redisClient = new RedisService().createClient()
 
 const router = express.Router()
 

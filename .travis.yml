@@ -1,9 +1,0 @@
-sudo: required
-
-before_install:
-  - cd backend
-  - npm i
-
-script:
-  - cd backend
-  - npm test

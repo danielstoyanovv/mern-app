@@ -12,8 +12,9 @@ import {authMiddleware} from "../../middlewares/authMiddleware";
 import {body} from "express-validator";
 import {verifyEmailMiddleware} from "../../middlewares/verifyEmailMiddleware";
 import {validateRequestMiddleware} from "../../middlewares/validate-requestMiddleware";
+import {UserRepository} from "../../repositories/UserRepository";
 
-const service = new UserService()
+const service = new UserService(new UserRepository)
 const redisClient = new RedisService().createClient()
 
 const router = express.Router()

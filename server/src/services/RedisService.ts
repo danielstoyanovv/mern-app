@@ -2,8 +2,11 @@
 
 const redis = require('redis');
 import {config} from "dotenv"
+import {RedisServiceInterface} from "./RedisServiceInterface";
+
 config()
-export class RedisService {
+
+export class RedisService implements RedisServiceInterface {
     /**
      * Get Redis Client
      * @return {object}

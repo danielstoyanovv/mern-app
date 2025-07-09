@@ -11,6 +11,7 @@ import {UserService} from "../../services/UserService";
 import {BadRequestError} from "../../errors/bad-request-error";
 import {RedisService} from "../../services/RedisService";
 import {validateRequestMiddleware} from "../../middlewares/validate-requestMiddleware";
+import {UserRepository} from "../../repositories/UserRepository";
 
 const redisClient = new RedisService().createClient()
 
@@ -35,7 +36,7 @@ router.post("/api/v1/users", [
 ], async (req: Request, res: Response) => {
     const { email, role } = req.body;
     const password = await bcrypt.hash(req.body.password, 10);
-    const service = new UserService()
+    const service = new UserService(new UserRepository)
     const exists = await service
         .setEmail(email)
         .getUserByEmail()

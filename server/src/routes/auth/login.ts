@@ -9,8 +9,9 @@ import { body } from "express-validator";
 import {UserService} from "../../services/UserService";
 import {UnauthorizedRequestError} from "../../errors/unauthorized-request-error";
 import {validateRequestMiddleware} from "../../middlewares/validate-requestMiddleware";
+import {UserRepository} from "../../repositories/UserRepository";
 
-const service = new UserService()
+const service = new UserService(new UserRepository)
 
 const router = express.Router()
 
