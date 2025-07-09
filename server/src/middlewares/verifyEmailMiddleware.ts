@@ -14,7 +14,7 @@ export const verifyEmailMiddleware = async (req: Request, res: Response, next: N
         .setId(id)
         .getUser()
     if (user.email !== email) {
-        const manager = new UserService()
+        const manager = new UserService(new UserRepository)
             .setEmail(email)
         const existsUser = await manager.emailExists()
         if (existsUser) {

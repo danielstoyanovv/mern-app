@@ -2,12 +2,10 @@
 
 import {Request, Response, NextFunction } from "express";
 import {TokenManager} from "../utils/TokenManager";
-import {LoggerService} from "../services/LoggerService";
 import {UnauthorizedRequestError} from "../errors/unauthorized-request-error";
 import {ForbiddenRequestError} from "../errors/forbidden-request-error";
 
 const tokenManager = new TokenManager()
-const logger = new LoggerService().createLogger()
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const token = req.body.token || req.query.token || req.headers['x-access-token'] || false
     if (!token) throw new UnauthorizedRequestError("Token is missing in this request!")
